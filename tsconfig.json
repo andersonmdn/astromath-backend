@@ -1,0 +1,15 @@
+{
+  "target": "ES6",
+  "module": "CommonJS",
+  "rootDir": "./src",
+  "outDir": "./dist",
+  "strict": true,
+  "esModuleInterop": true,
+  "type": "module",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  }
+}
