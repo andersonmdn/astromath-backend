@@ -7,7 +7,7 @@
   "license": "ISC",
   "description": "",
   "scripts": {
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon --exec \"cls && ts-node\" src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },
