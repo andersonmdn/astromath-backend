@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import express from 'express'
 import http from 'http'
 import { Server } from 'socket.io'
-import { handleSocket } from './socket'
+import { handleSocket } from './handleSocket'
 
 const app = express()
 const server = http.createServer(app)
@@ -29,7 +29,10 @@ io.on('connection', socket => {
 
     io.emit('reconnect', { previousSocketId })
   } else {
-    console.log('[Backend] Novo cliente conectado:', socket.id)
+    console.log(
+      chalk.green.bold('[Novo Cliente Conectado]'),
+      chalk.bold(userId)
+    )
   }
 
   handleSocket(socket, io)
