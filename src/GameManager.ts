@@ -10,6 +10,31 @@ export type Position = { angle: number; ring: number }
 
 const gameStates: Record<string, GameState> = {}
 
+export function hasBoard(roomId: string, playerId: string): boolean {
+  const game = gameStates[roomId]
+  if (!game) {
+    console.error(chalk.red(`[Erro] Jogo na sala ${roomId} não encontrado`))
+    return false
+  }
+  return !!game.playerBoards[playerId]
+}
+
+export function sessionRecover(
+  roomId: string,
+  playerId: string
+): Board[] | null {
+  const game = gameStates[roomId]
+  if (!game || !game.playerBoards[playerId]) {
+    console.error(
+      chalk.red(
+        `[Erro] Sessão não encontrada para o jogador ${playerId} na sala ${roomId}`
+      )
+    )
+    return null
+  }
+  return game.playerBoards[playerId]
+}
+
 export function registerBoard(
   roomId: string,
   playerId: string,

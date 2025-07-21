@@ -1,6 +1,11 @@
 import chalk from 'chalk'
 import { Server, Socket } from 'socket.io'
-import { landingSpaceship, registerBoard } from './GameManager'
+import {
+  hasBoard,
+  landingSpaceship,
+  registerBoard,
+  sessionRecover,
+} from './GameManager'
 import { createRoom, joinRoom } from './roomManager'
 import Board from './types/Board'
 import { Spaceship } from './types/Spaceship'
@@ -27,9 +32,31 @@ export const handleSocket = (socket: Socket, io: Server) => {
       return callback({ success: false, error: 'Dados inválidos' })
     }
 
-    registerBoard(roomId, playerId, board, io)
+    if (hasBoard(roomId, playerId)) {
+      console.log(
+        chalk.yellow(
+          `Tabuleiro já registrado para o jogador ${playerId} na sala ${roomId}`
+        )
+      )
 
-    callback({ success: true })
+      board = sessionRecover(roomId, playerId)
+
+      socket.emit('sessionRecover', {
+        board,
+      })
+
+      console.log(
+        chalk.blue(
+          `Recuperando sessão para o jogador ${playerId} na sala ${roomId}`
+        )
+      )
+
+      callback({ success: true })
+    } else {
+      registerBoard(roomId, playerId, board, io)
+
+      callback({ success: true })
+    }
   })
 
   socket.on(
